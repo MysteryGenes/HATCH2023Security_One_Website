@@ -1,118 +1,32 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>My Website</title>
-     <link rel="stylesheet" href="main_page.css">
-     <style>
-      /* style the navigation bar */
-      nav {
-        background-color: #a4d7da;
-        overflow: hidden;
-        font-size: 20px;
-      }
-      /* style the links inside the navigation bar */
-      nav a {
-        float: left;
-        color: #333;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-      }
-      /* change the color of the active/current link */
-      nav a.active {
-        background-color: #67a9ad;
-      }
-      /* add a dropdown menu */
-      .dropdown {
-        float: left;
-        overflow: hidden;
-      }
-      .dropdown .dropbtn {
-        font-size: 16px;
-        border: none;
-        outline: none;
-        color: white;
-        padding: 14px 16px;
-        background-color: inherit;
-        margin: 0;
-      }
-      .dropdown:hover .dropbtn {
-        background-color: #67a9ad;
-      }
-      /* dropdown content (hidden by default) */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 160px;
-        z-index: 1;
-      }
-      /* links inside the dropdown */
-      .dropdown-content a {
-        float: none;
-        color: #333;
-        padding: 6px 8px;
-        text-decoration: none;
-        display: block;
-        text-align: left;
-      }
-      /* add a hover effect to dropdown links */
-      .dropdown-content a:hover {
-        background-color: #ddd;
-      }
-      /* show the dropdown menu on hover */
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-      </style>
-  </head>
-  <body>
-    <nav>
-      <a  href="mainpage">Home</a>
-      <a class="active" href="about">About</a>
-      <a href="contact">Contact</a>
-      <a href="help">Help</a>
-      <a href="adminmainpage">Admin</a>
-      <div class="dropdown">
-        <button class="dropbtn"><img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081792647091466290/Screen_Shot_2023-03-04_at_10.17.05_PM.png" width=50></button>
-        <div class="dropdown-content">
-          <a href="settings">Settings</a>
-          <a href="profile">Profile</a>
-          <a href="logsomething">Logout</a>
-        </div>
-      </div>
-    </nav>
-    <h1>About</h1>
-    <h2> Goal</h2>
-    <p> This website was created for the hackathon known as HATCH, a yearly program organized by About HudsonAlpha Institute for Biotechnology and is designed to challenge professionals and students to rise to the given challenges and create something ot benifit humans in some way. This teams challenge is the following: </p>
-    <b> Security One: </b>
-    <p> As we advance our ability to interpret the human genome and the technology performing DNA sequencing advances, the ability to identify individuals solely from a DNA sequence is possible. One of the most famous uses of this ability was in the identification and ultimate arrest of a man suspected of being the Golden State Killer, breaking open the case after more than three decades. It is clear that the use of genomic data in this case was used for good, but what if it weren’t? How do we protect genomic data from getting into the wrong hands? Researchers and investigators need access, but what about marketing firms looking for the perfect targets? Or someone hunting a person in witness protection? Security One is an open-ended cybersecurity challenge to protect genomic data. </p>
-    <hr>
-    <h2> The following are the team memebers </h2>
-    <h3> Eugene Park </h3>
-    <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917120574660699/PXL_20230305_1227406062.jpg" alt="Photo of Eugene" style="width:200px;">
-    <p> Hello my name is Eugene. I am from Madison and I attend the Alabama School of Cyber Technology and Engineering (ASCTE). I am currently a sophomore and I enjoy coding.</p>
-    <br>
-    <h3> William Mitchell </h3>
-    <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917979358408806/PXL_20230305_1226391992.jpg" alt="Photo of William" style="width:200px;">
-    <p> I am William Mitchell, I grew up and live in Hunstsville, Alabama. I attend Alabama School of Cyber Technology and Engineering (ASCTE). I am currently a sophomore and intend to grow my skills across the spectrum.</p>
-    <br>
-    <h3> KB Allen </h3>
-    <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917120323006555/PXL_20230305_1231153092.jpg" alt="Photo of KB"style="width:200px;">
-    <p> Hello there everyone!!! I'm KB, I go to JP2 in Huntsville, Alabama. I'm a sophmore. I like cats and have a caffiene addiction.</p>
-    <br>
-    <h3> Uriah Chumpitaz</h3>
-    <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917121233170555/PXL_20230305_1231072322.jpg" alt="Photo of Uriah" style="width:200px;">
-    <p>f̷̛͚̫̦̣̦͊͒̎͑̀̾̀̍́͋͐̕r̷̲͚̣̎̑̆́͝͝e̵̢̨̞͙̙͙̪̯̫͍̘͈̒͋̓̕ȩ̸̧̼͚̺̮̘̟̒̄̈́̈́͌́̋́̇ ̴̺͖̙̣̰̙̜͉̂͆̾͋͌̔͂͒̍̕͘͝ḿ̷̢̧̢̢̮̹̣͎̖͉̬̟͔̒̔̈́̌͋͗͒̓̚e̶̡͖͚̝͕͚̲̮̟͈̅̋͌̉͊͝ͅ ̵̡̞̦̰̪͓͕̟̃̀̆͝f̴̡̡̮̦̯̫̻̰̮̺͕̀ŗ̶̪͈̠̻̹̰̬̭̥͉̼͉͚̈̍̈́̀̆̈̽̈́̚͜ö̷̧̫̺͉̳͈͇̫̳͉͔͖́͂͛͆͐̾͌͋̍̎̾ͅm̵̨̛̪̥͇̅̓̈́͜ ̵͈͍͚̖̿͑͂͌̾̈́t̵͎͕̻͖̟̤̺̃̂̎̽̉̑̄̉̃̾͊ȟ̴̡͎͎̥̖̮̬̣̟̝̊́̕i̷͙̜͍͇͙͔̻̼̟̱͔͔̤̫͂s̶̘̱̮̻̻͙̪̲͖̺̗̿͐̀̃͑͆̊̈̋̔ ̷̢̡̭͎̝̥̜̖̝̜̩̂̑͛̈́͌̌̾̈́̄̍͌̈́̓͌͘ͅä̵͚̣̮̞̪̺̥́̇͝c̵̨͈̥̤̖̖̞̍͜c̵̫̯̹͔͓̒̽̚ư̴̢͕̖̯̲̳̝̮͖̘̦̞̲̌͂r̷̡̨͕͖̠̝̟̲̭̣̲̍͋̑̀̀̅̀̈́͑͘ş̵̧̭̘͈͖̤͉̣̩̟̻̝̤̾̓̎̋̐̑̓̎̆͑̎͜͝ẹ̷̢̗̭̮̫̲̭̫̘̝̰̽̊̂̐̏͐̋̅̆̔̉̅̆́͜d̵͉͔̫̥̲̐̌̀̐͛͊͐̚ ̸̺̥͕̣͕̥̣̋͋p̸͖̮̱̊͗͆͝l̸͔̬̪̻̬͇̅̎̄̅̉ä̵̛̫̬̗̻̯́́̀͑͜͠n̶̤̟̜̤͚͎̹̜̺͆͂͗̐̾̒́̌̎̕͝ͅè̸̗̘͇̳́̔́̐̎̏̓͋͌͜ </p>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <h3> Jacob Schumer </h3>
-    <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081792647091466290/Screen_Shot_2023-03-04_at_10.17.05_PM.png" alt="Photo of Schumer" style="width:200px;">
-    <p> INFO ABOUT JACOB </p>
-    <br>
-  </body>
-</html>
+{% extends 'layout.html' %}
+
+{% block body %}
+<img src="https://cdn.discordapp.com/attachments/1080310430561472633/1082011602129256598/flors-xuquer-sueca-flores-frescas-envios-regalos-banner-e1649502302507.jpg" width="100%" height="150px">
+  <h2> Goal</h2>
+  <p> This website was created for the hackathon known as HATCH, a yearly program organized by About HudsonAlpha Institute for Biotechnology and is designed to challenge professionals and students to rise to the given challenges and create something ot benifit humans in some way. This teams challenge is the following: </p>
+  <b> Security One: </b>
+  <p> As we advance our ability to interpret the human genome and the technology performing DNA sequencing advances, the ability to identify individuals solely from a DNA sequence is possible. One of the most famous uses of this ability was in the identification and ultimate arrest of a man suspected of being the Golden State Killer, breaking open the case after more than three decades. It is clear that the use of genomic data in this case was used for good, but what if it weren’t? How do we protect genomic data from getting into the wrong hands? Researchers and investigators need access, but what about marketing firms looking for the perfect targets? Or someone hunting a person in witness protection? Security One is an open-ended cybersecurity challenge to protect genomic data. </p>
+  <hr>
+  <center>
+  <h2> The following are the team memebers </h2>
+  <h3> Eugene Park </h3>
+  <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917120574660699/PXL_20230305_1227406062.jpg" alt="Photo of Eugene" style="width:200px;">
+  <p> Hello my name is Eugene. I am from Madison and I attend the Alabama School of Cyber Technology and Engineering (ASCTE). I am currently a sophomore and I enjoy coding.</p>
+  <br>
+  <h3> William Mitchell </h3>
+  <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917979358408806/PXL_20230305_1226391992.jpg" alt="Photo of William" style="width:200px;">
+  <p> I am William Mitchell, I grew up and live in Hunstsville, Alabama. I attend Alabama School of Cyber Technology and Engineering (ASCTE). I am currently a sophomore and intend to grow my skills across the spectrum.</p>
+  <br>
+  <h3> KB Allen </h3>
+  <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917120323006555/PXL_20230305_1231153092.jpg" alt="Photo of KB"style="width:200px;">
+  <p> Hello there everyone!!! I'm KB, I go to JP2 in Huntsville, Alabama. I'm a sophmore. I like cats and have a caffiene addiction.</p>
+  <br>
+  <h3> Uriah Chumpitaz</h3>
+  <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081917121233170555/PXL_20230305_1231072322.jpg" alt="Photo of Uriah" style="width:200px;">
+  <p> Hello World! My name is Uriah Chumpitaz. I am a 2nd year junior at ASCTE, My father was in the military, I am an aspiring cyber security engineer, and I really enjoyed working with my friends to make this!</p>
+  <h3> Jacob Shumer </h3>
+  <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081792647091466290/Screen_Shot_2023-03-04_at_10.17.05_PM.png" alt="Photo of Schumer" style="width:200px;">
+  <p> Hi there! My name is Jacob Shumer and I am a sophomore at ASCTE. I am an avid coder and programmer and I love eating candy. I am orignially from Mobile but I board at ASCTE. </p>
+  </center>
+  <br>
+{% endblock %}

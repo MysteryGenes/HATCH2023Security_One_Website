@@ -1,15 +1,23 @@
-from flask import Flask, redirect, url_for, request, session, flash, render_template, jsonify, request, send_file
+from flask import Flask, redirect, url_for, request, session, flash, render_template, jsonify, request, send_file, make_response
 from wtforms import Form, StringField, PasswordField, validators
 from functools import wraps
 from werkzeug.utils import secure_filename
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+#from Crypto.PublicKey import RSA
+#from Crypto.Cipher import PKCS1_OAEP
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+import io
+from io import BytesIO
+
 import os
 
 from passlib.hash import sha256_crypt
 
 from LoginSigninFunctions import login_b, signup_b, get_users, is_email_taken, is_username_taken, User, is_code_valid
 import data
+import gzip
 
 import os
 import json
@@ -17,15 +25,22 @@ import json
 # import rsa
 
 app = Flask(__name__)
-DATA = data.Data()
 
 UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# generating rsa key pair
-key = RSA.generate(2048)
-with open('private.pem','wb') as f:
-    f.write(key.export_key())
-cipher = PKCS1_OAEP.new(key.publickey())
+
+
+# @app.after_request
+# def add_header(response):
+#     response.headers['Content-Encoding'] = 'gzip'
+#     response.headers['Vary'] = 'Accept-Encoding'
+#     if response.status_code != 204 and response.status_code != 304:
+#         response_data = response.get_data()
+#         gzipped_data = gzip.compress(response_data)
+#         response.set_data(gzipped_data)
+#         response.headers['Content-Length'] = len(gzipped_data)
+#     return response
+# DATA = data.Data()
 
 
 # ----- Wraps -----
@@ -53,38 +68,50 @@ def is_not_logged_in(f):
     return wrap
 
 
+def is_level_1(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if session['access'] >= 1:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized', 'danger')
+            return redirect(url_for('mainpage'))
+    
+    return wrap
+
+
 # ----- Form Classes -----
 class CreateUserForm(Form):
-    name = StringField('name', [
+    name = StringField('Name', [
         validators.DataRequired(message='Fill out the name field'),
     ])
-    username = StringField('username', [
+    username = StringField('Username', [
         validators.DataRequired(message='Fill out the username field'),
     ])
-    email = StringField('email', [
+    email = StringField('Email', [
         validators.DataRequired(message='Fill out the email field'),
     ])
-    password = PasswordField('password', [
+    password = PasswordField('Password', [
         validators.DataRequired(message='Fill out the password field'),
         validators.length(
             12, 64, message='Minimum password length is 12, max is 64')
     ])
-    confirm_password = PasswordField('confirm_password', [
+    confirm_password = PasswordField('Confirm Password', [
         validators.DataRequired(message='Fill out the confirm password field'),
         validators.length(12, 64, message='Passwords do not match'),
         validators.EqualTo('password', message='Passwords do not match')
     ])
-    code = StringField('code', [
+    code = StringField('Access Code', [
         validators.DataRequired(
             message="A code is required to join. Please contact an admin.")
     ])
 
 
 class LoginForm(Form):
-    username = StringField('username', [
+    username = StringField('Username', [
         validators.DataRequired(message="Fill out the username")
     ])
-    password = PasswordField('password', [
+    password = PasswordField('Password', [
         validators.DataRequired(message="Fill out the password form")
     ])
 
@@ -131,6 +158,7 @@ def login():
     form = LoginForm(request.form)
 
     if request.method == "POST" and form.validate():
+
         username = form.username.data
         passwordhash = sha256_crypt.hash(form.password.data)
 
@@ -174,40 +202,47 @@ def logsomething():
 @app.route('/checksession')
 def checksession():
     print(session)
-
     return f"<p>logged_in: {session['logged_in']}, username: {session['username']}, name: {session['name']}, email: {session['email']}, access: {session['access']}</p>"
 
 
 @app.route('/about')
-# @is_logged_in
+@is_logged_in
 def about():
     return render_template('about.html')
 
-@app.route('/williammitchell')
-def williammitchell():
-    return render_template('williammitchell.html')
+
+@app.route('/adminmainpage')
+@is_logged_in
+@is_level_1
+def admin_main_page():
+    logs = get_logs()
+    users = get_users()
+    users_as_json = [user.as_object() for user in users]
+
+    if request.method == 'POST':
+        for user in users:
+            if changeduser.username == user.username:
+                user.change_access(changeduser.access)
+                flash('User access level changed', 'success')
+                return redirect(url_for('admin_main_page'))
+
+    return render_template('adminmainpage.html', logs=logs, UData=users_as_json)
 
 
 @app.route('/contact')
-# @is_logged_in
+@is_logged_in
 def contact():
     return render_template('contact.html')
 
 
 @app.route('/profile')
-# @is_logged_in
+@is_logged_in
 def profile():
     return render_template('profile.html')
 
 
-@app.route('/adminmainpage')
-# @is_logged_in
-def adminmainpage():
-    return render_template('adminmainpage.html')
-
-
 @app.route('/settings')
-# @is_logged_in
+@is_logged_in
 def settings():
     return render_template('settings.html')
 
@@ -215,7 +250,15 @@ def settings():
 @app.route('/mainpage')
 @is_logged_in
 def mainpage():
-    return render_template('mainpage.html')
+    uploads_dir = "./uploads"
+    uploads_files = os.listdir(uploads_dir)
+    return render_template('mainpage.html', uploads_files=uploads_files)
+
+
+@app.route('/help')
+@is_logged_in
+def help():
+    return render_template('help.html')
 
 
 @app.route('/')
@@ -225,55 +268,59 @@ def index():
     return redirect(url_for('login'))
 
 
-# Code for admin JS thing
-@app.route('/AdminParsing')
-def get_Admindata():
-    NameList = []
-    # Opens json file for user info
-    with open("test.json", "r") as openUsersFile:
-        UsersInfoFile = json.load(openUsersFile)
-    # Opens json file for admin logs
-    with open("UserLogs.json", "r") as openLogsFile:
-        LogsForFile = json.load(openLogsFile)
-    for key in UsersInfoFile.keys():
-        NameList.append(UsersInfoFile[key]["name"] + ":" + UsersInfoFile[key]["access"])
-
-    return render_template('index.html', data=UsersInfoFile)
-
-
-
 @app.route('/upload', methods=['POST'])
+@is_level_1
 def upload():
     file = request.files['file']
     filename = secure_filename(file.filename)
-    file_contents = file.read()
-    encrypted_contents=cipher.encrypt(file_contents)
-    with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'wb') as f:
-        f.write(encrypted_contents)
-    return 'File uploaded successfully'
+
+    # Save the file to disk
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    flash('File Successfully Uploaded', 'success')
+    return redirect(url_for('admin_main_page'))
+    
 
 
 @app.route('/download')
+@is_logged_in
 def download():
     filename = request.args.get('filename')
     if not filename:
         return 'Error: no filename specified'
-    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    path = os.path.join(UPLOAD_FOLDER, filename)
     if not os.path.isfile(path):
         return 'Error: file not found'
-    # Read the encrypted file contents and decrypt with RSA
-    with open(path, 'rb') as f:
-        encrypted_contents = f.read()
-    decrypted_contents = key.decrypt(encrypted_contents)
-    # Return the decrypted contents as a file attachment
-    return send_file(
-        io.BytesIO(decrypted_contents),
-        mimetype='application/octet-stream',
-        as_attachment=True,
-        attachment_filename=filename
-    )
+
+    # Compress the file using gzip
+    with open(path, 'rb') as f_in:
+        compressed_data = BytesIO()
+        with gzip.GzipFile(fileobj=compressed_data, mode='wb') as f_out:
+            f_out.write(f_in.read())
+        compressed_data.seek(0)
+
+    # Return the compressed file as a download attachment
+    response = make_response(compressed_data.getvalue())
+    response.headers.set('Content-Type', 'application/octet-stream')
+    response.headers.set('Content-Encoding', 'gzip')
+    response.headers.set('Content-Disposition', 'attachment', filename=filename + '.gz')
+    return response
+
+
+def get_logs():
+    with open('UserLogs.json', 'r') as file:
+        logs = json.load(file)
+    return logs
+
+
+def get_UData():
+    with open('test.json', 'r') as file:
+        get_UData = json.load(file)
+    return get_UData
 
 
 if __name__ == '__main__':
     app.secret_key = 'thi5i54v3ry5up3r53cr3tk3y*(@$)(!*#^%*&^UFHP*@(#Y$*&_Y&fpaw38ryp8934'
+    # context = ('ssl_context/server.cert', 'ssl_context/server.key')
+    # app.run(host='0.0.0.0', port=8080, ssl_context=context, debug=True)
     app.run(host='0.0.0.0', port=8080, debug=True)

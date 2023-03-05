@@ -4,7 +4,7 @@
   "name": "admin",
   "email": "admin@localhost.com",
   "password": "$5$rounds=535000$O9/9sgkA.VICshw8$9x62lHoukiSrRMtGo4sBiTB3wBUNNFhr5oMW7qj5DL7",
-  "access": 0,
+  "access": 1,
   "salt": "aaaaa"
  },
  {
@@ -52,7 +52,7 @@
   "name": "Levi",
   "email": "uriah@gmail.com",
   "password": "$5$rounds=535000$JuivDlYLa.b5MsPa$EqRkcqKdgv3jTvrmhnoMYlzjA0OWxWgULwTRcaXkV10",
-  "access": 0,
+  "access": 1,
   "salt": "%<q~="
  }
 ]

@@ -1,35 +1,45 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Create Account</title>
+  
+  <link rel="stylesheet" href="../static/bootstrap.css">
+  <link rel="stylesheet" href="../static/login.css">
+</head>
 
-{% block body %}
-<link rel="stylesheet" href="static/login.css">
-<link rel="stylesheet" href="global.css">
-  <h1>Create Account</h1>
-  {% from "includes/_formhelpers.html" import render_field %}
-  <form method="POST" action="">
-    <div class="form-group">
-      {{ render_field(form.name, class_="form_control")}}
-    </div> 
+<body>
+  {% include 'includes/_messages.html' %}
+  <div id="signup-container">
+    <h1>Create Account</h1>
+    {% from "includes/_formhelpers.html" import render_field %}
+    <form method="POST" action="">
+      <div class="form-group">
+        {{ render_field(form.name, class_="form_control")}}
+      </div> 
 
-    <div class="form-group">
-      {{ render_field(form.username, class_="form_control")}}
-    </div> 
+      <div class="form-group">
+        {{ render_field(form.username, class_="form_control")}}
+      </div> 
 
-    <div class="form-group">
-      {{ render_field(form.email, class_="form_control")}}
-    </div> 
+      <div class="form-group">
+        {{ render_field(form.email, class_="form_control")}}
+      </div> 
 
-    <div class="form-group">
-      {{ render_field(form.password, class_="form_control") }}
-    </div>
+      <div class="form-group">
+        {{ render_field(form.password, class_="form_control") }}
+      </div>
 
-    <div class="form-group">
-      {{ render_field(form.confirm_password, class_="form_control") }}
-    </div>
-    
-    <div class="form-group">
-      {{ render_field(form.code, class_="form-control") }}
-    </div>
+      <div class="form-group">
+        {{ render_field(form.confirm_password, class_="form_control") }}
+      </div>
+      
+      <div class="form-group">
+        {{ render_field(form.code, class_="form-control") }}
+      </div>
 
-    <p><input class="btn btn-primary" type="submit" value="Submit"></p>
-  </form>
-{% endblock %}
+      <p><input class="btn btn-primary" type="submit" value="Submit"></p>
+    </form>
+    <p>Already have an account? <a href="login">Login</a></p>
+  </div>
+</body>
+</html>

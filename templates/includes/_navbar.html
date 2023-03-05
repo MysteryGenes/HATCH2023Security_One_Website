@@ -1,0 +1,19 @@
+{% if session.logged_in %}
+<nav>
+    <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081946920534167612/Screen_Shot_2023-03-04_at_7.32.56_PM.png" alt="Logo"style="width:45px;"style="height:45px"> 
+    <a  href="mainpage">|  Home  |</a>
+    <a href="about">|  About  |</a>
+    <a href="help">|  Help  |</a>
+    {% if session.access >= 1 %}
+    <a href="adminmainpage">|  Admin  |</a>
+    {% endif %}
+    <div class="dropdown">
+        <button class="dropbtn"><img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081792647091466290/Screen_Shot_2023-03-04_at_10.17.05_PM.png" width=50></button>
+        <div class="dropdown-content">
+            <a href="settings">Settings</a>
+            <a href="profile">Profile</a>
+            <a href="logsomething">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endif %}

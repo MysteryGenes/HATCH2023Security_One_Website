@@ -18,7 +18,7 @@ class User:
     access: int = ""
     salt: string = ""
 
-    def __init__(self, userobject: object = None, username: string = None, name: string = None, email: string = None, password: string = None, access: int = None):
+    def __init__(self, userobject: object = None, username: string = None, name: string = None, email: string = None, password: string = None, access: int = None, salt: string = None):
         #  Checks to see if the input is via Object or individual values
         if not userobject:
             self.username = username
@@ -26,12 +26,14 @@ class User:
             self.email = email
             self.password = password
             self.access = access
+            self.salt = salt
         else:
             self.username = userobject['username']
             self.name = userobject['name']
             self.email = userobject['email']
             self.password = userobject['password']
             self.access = userobject['access']
+            self.salt = userobject['salt']
     
     def as_object(self):
         return {
@@ -70,9 +72,11 @@ def login_b(username, password, ip):
 
     for user in users:
         if user.username == username:
+            print(username, user.as_object())
             #  Get the hash of the inputted password to compare to the stored one
             correct_password = sha256_crypt.verify(f"{password}{user.salt}", user.password)
 
+            print(correct_password)
             if correct_password:
                 # TODO: Log user login success
                 log_user(user.username, user.name, "Success", ip)
@@ -86,6 +90,7 @@ def login_b(username, password, ip):
                 # TODO: Remove the '(but user was found)' if this message is ever shown to the user
                 return {"success": False, "message": "Password was Incorrect (but user was found)"}
     
+    print("fail")
     # TODO: Log user login failure
     return {"success": False, "messsage": "No user found with that username"}
 
@@ -154,12 +159,15 @@ def is_code_valid(code, data):
 
 
 def log_user(username, name, success, ip):
+    logs = []
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     with open("UserLogs.json", "r") as TimeFile:
         time_file_open = json.load(TimeFile)
+        for each in time_file_open:
+            logs.append(each)
 
-    time_record = {
+    new_record = {
         "Username": username,
         "Name": name,
         "Time": current_time,
@@ -167,8 +175,7 @@ def log_user(username, name, success, ip):
         "ip": ip
     }
 
-    time_file_open.update(time_record)
-    json_objecttime = json.dumps(time_file_open, indent=1)
+    logs.append(new_record)
 
-    with open("UserLogs.json", "w") as outfileTime:
-        outfileTime.write(json_objecttime)
+    with open(LOG_FILE, "w") as file:
+        json.dump([log for log in logs], file, indent=1)
