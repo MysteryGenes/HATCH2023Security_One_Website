@@ -2,8 +2,9 @@
 from passlib.hash import sha256_crypt
 import json
 import string
-from random import *
+import random
 from datetime import datetime
+
 USER_FILE = "test.json"
 LOG_FILE = "UserLogs.json"
 
@@ -12,38 +13,39 @@ LOG_FILE = "UserLogs.json"
 class User:
     username: string = ""
     name: string = ""
-    passwordhash: string = ""
+    email: string = ""
+    password: string = ""
     access: int = ""
+    salt: string = ""
 
-
-    def __init__(self, userobject: object = None, username: string = None, name: string = None, email: string = None, passwordhash: string = None, access: int = None):
+    def __init__(self, userobject: object = None, username: string = None, name: string = None, email: string = None, password: string = None, access: int = None):
         #  Checks to see if the input is via Object or individual values
         if not userobject:
             self.username = username
             self.name = name
             self.email = email
-            self.passwordhash = passwordhash
+            self.password = password
             self.access = access
         else:
             self.username = userobject['username']
             self.name = userobject['name']
             self.email = userobject['email']
-            self.passwordhash = userobject['passwordhash']
+            self.password = userobject['password']
             self.access = userobject['access']
-
     
-    def AsObject(self):
-        {
+    def as_object(self):
+        return {
             "username": self.username,
             "name": self.name,
             "email": self.email,
-            "passwordhash": self.passwordhash,
-            "access": self.access
+            "password": self.password,
+            "access": self.access,
+            "salt": self.salt
         }
 
 
 # ---- Helpers ----- #
-def getUsers():
+def get_users():
     users = []
 
     with open(USER_FILE, "r") as file:
@@ -54,103 +56,81 @@ def getUsers():
     return users
 
 
-def writeUsers(users: list[User]):
-    pass
+def write_users(users: list[User]):
+    with open(USER_FILE, "w") as file:
+        json.dump([user.as_object() for user in users], file, indent=1)
 
 
 # ----- Checks ----- #
-# Checking the inputed username and password against
-def Login(username, password, ip):
-    users = getUsers()
+
+# Do not change these function names. They are set this way for a reason.
+# Checking the inputted username and password against
+def login_b(username, password, ip):
+    users = get_users()
 
     for user in users:
         if user.username == username:
             #  Get the hash of the inputted password to compare to the stored one
-            seededPasswordHash = sha256_crypt.hash(f"{password}{user.seed}")
-            correct_password = sha256_crypt.verify(user.password, seededPasswordHash)
+            correct_password = sha256_crypt.verify(f"{password}{user.salt}", user.password)
 
             if correct_password:
                 # TODO: Log user login success
+                log_user(user.username, user.name, "Success", ip)
+
                 return {"success": True, "user": user}
             else:
                 # TODO: Log user login failure
+                
+                log_user(user.username, user.name, "Failed", ip)
+                
                 # TODO: Remove the '(but user was found)' if this message is ever shown to the user
                 return {"success": False, "message": "Password was Incorrect (but user was found)"}
     
     # TODO: Log user login failure
     return {"success": False, "messsage": "No user found with that username"}
 
-    if "Just so that I can collapse this all" == "":
-        pass
-        # --- NO LONGER NEEDED ---
-        """# # Iteration through each userID
-        # for key in InfoFile["userID"].keys():
-        #     # Testing if inputed user information if correct through hashs
-        #     if sha256_crypt.verify(InfoFile["userID"][key]["seed"]+Password, InfoFile["userID"][key]["Password"]):
-        #         # Runs when its verifies
-        #         now = datetime.now()
-        #         current_time = now.strftime("%H:%M:%S")
-        #         with open(LogFilepath, "r") as TimeFile:
-        #             # json_object = json.load(openfile)
-        #             TimeFileOpen = json.load(TimeFile)
-                    
-        #         NameofUser = TimeFileOpen["userID"][key]["name"]
-        #         TimeRecord = {
-        #             "Username": Username,
-        #             "Name": NameofUser,
-        #             "Time": current_time
-        #         }
 
-        #         TimeFileOpen.update(TimeRecord)
+def signup_b(username, name, email, password, code, data, ip):
+    #  Generate the salt
+    salt = "".join(random.choices(string.ascii_letters + string.punctuation + string.digits, k=5))
+    #  Hash the password with the salt
+    saltedpassword = sha256_crypt.hash(f"{password}{salt}")
 
-        #         json_objecttime = json.dumps(TimeFileOpen, indent=1)
-
-        #         with open(LogFilepath, "w") as outfileTime:
-        #             outfileTime.write(json_objecttime)
-
-        #         return TimeFileOpen["userID"][key]
-        #     else:
-        #         # Runs when its not correct
-        #         return None"""
-# -- end function --
-
-
-def Signup(username, name, email, password):
-    #  Generate the seed
-    seed = "".join(random.choices(string.ascii_letters + string.punctuation + string.digits, k=5))
-    #  Hash the password with the seed
-    seededPasswordHash = sha256_crypt.hash(f"{password}{seed}")
-
-    users = getUsers()
+    users = get_users()
 
     # Backup checks in case the first ones fail
-    if IsUsernameTaken(username):
+    if is_username_taken(username):
         # TODO: Log missed check
         return {"success": False, "message": "Email was taken, check failed somewhere."}
 
-    if IsEmailTaken(email):
+    if is_email_taken(email):
+        # TODO: Log missed check
+        return {"success": False, "message": "Email was taken, check failed somewhere."}
+
+    if not is_code_valid(code, data):
         # TODO: Log missed check
         return {"success": False, "message": "Email was taken, check failed somewhere."}
 
     # Creates new user object to append to the list of users
     new_user = {
         "username": username,
-        "password": seededPasswordHash,
-        "access": 0,
         "name": name,
         "email": email,
-        "seed": seed
+        "password": saltedpassword,
+        "access": 0,
+        "salt": salt
     }
 
+    data.remove_code(code)
     users.append(User(userobject=new_user))
-    writeUsers(users)
+    write_users(users)
 
     return {"success": True, "user": new_user}
 
 
 # ----- Checks -----
-def IsUsernameTaken(username):
-    users = getUsers()
+def is_username_taken(username):
+    users = get_users()
 
     for user in users:
         if user.username == username:
@@ -159,11 +139,36 @@ def IsUsernameTaken(username):
     return True
 
 
-def IsEmailTaken(email):
-    users = getUsers()
+def is_email_taken(email):
+    users = get_users()
 
     for user in users:
         if user.email == email:
             return False
 
     return True
+
+
+def is_code_valid(code, data):
+    return code in data.codes
+
+
+def log_user(username, name, success, ip):
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    with open("UserLogs.json", "r") as TimeFile:
+        time_file_open = json.load(TimeFile)
+
+    time_record = {
+        "Username": username,
+        "Name": name,
+        "Time": current_time,
+        "Success": success,
+        "ip": ip
+    }
+
+    time_file_open.update(time_record)
+    json_objecttime = json.dumps(time_file_open, indent=1)
+
+    with open("UserLogs.json", "w") as outfileTime:
+        outfileTime.write(json_objecttime)

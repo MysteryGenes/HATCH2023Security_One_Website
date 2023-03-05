@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>My Website</title>
-     <link rel="stylesheet" href="main_page.css">
+     <link rel="stylesheet" href="global.css">
      <style>
       /* style the navigation bar */
       nav {
@@ -77,11 +77,16 @@
         <div class="dropdown-content">
           <a href="settings">Settings</a>
           <a href="profile">Profile</a>
-          <a href="#">Logout</a>
+          <a href="logsomething">Logout</a>
         </div>
       </div>
     </nav>
     <h1>Admin Main Page</h1>
+    <h2>Upload a File</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
 
 
 <!--
@@ -91,9 +96,10 @@
       fetch('/AdminParsing')
           .then(response => response.json())
           .then(data => {
-              document.querySelector('').textContent = NameList.Name;
-              document.querySelector('').textContent = LogsForFile.;
-          }
+              document.querySelector('').textContent = NameList;
+              console.log(NameList);
+              document.querySelector('').textContent = LogsForFile;
+          });
 
     </script>
   </body>

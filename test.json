@@ -1,16 +1,58 @@
 [
-    {
-        "Username": "a00bed6dfd59c4e55b63c48f60b54cb441c4e7abeec9b4ba452472a0bdebb939",
-        "Password": "47ab7f3f2270751187073b23e4ab798414c7cc873fe9806c4c2f653f55d78434",
-        "Access": "3",
-        "Name": "4",
-        "Email": "5"
-    },
-    {
-        "Username": "6",
-        "Password": "7",
-        "Access": "8",
-        "Name": "9",
-        "Email": "10"
-    }
+ {
+  "username": "admin",
+  "name": "admin",
+  "email": "admin@localhost.com",
+  "password": "$5$rounds=535000$O9/9sgkA.VICshw8$9x62lHoukiSrRMtGo4sBiTB3wBUNNFhr5oMW7qj5DL7",
+  "access": 0,
+  "salt": "aaaaa"
+ },
+ {
+  "username": "kano",
+  "name": "jacob",
+  "email": "kano@pclip.dev",
+  "password": "$5$rounds=535000$/7qrcUeCrA4f3S3u$H7TLJRq9p50L8Q5222o0qs5FxJ9TdyLuc6O/l4VMGH5",
+  "access": 0,
+  "salt": "v!OZ5"
+ },
+ {
+  "username": "kano2",
+  "name": "jacob2",
+  "email": "kano2@pclip.dev",
+  "password": "$5$rounds=535000$WNDEqyN5qq5ZiSWN$F0B2qAzOg/xK7SAa0Lg6EONH76kS6DZE4Dosucv6KL/",
+  "access": 0,
+  "salt": "Phg-F"
+ },
+ {
+  "username": "kano3",
+  "name": "jacob3",
+  "email": "kano3@pclip.dev",
+  "password": "$5$rounds=535000$kuLZVzp8JIH5c/SG$xzuK6wxWG8zYNk1ajJfacOEkKizL.T5b7rGPk/BShxD",
+  "access": 0,
+  "salt": "w@.z."
+ },
+ {
+  "username": "kano4",
+  "name": "jacob",
+  "email": "kano4@pclip.dev",
+  "password": "$5$rounds=535000$3ZinXFzqMPfLp9no$g6kUVA4Xz1udxW1fc1Pg9RYiYC.wRbTNwVE4TPlRbk5",
+  "access": 0,
+  "salt": "H[N\"s"
+ },
+ {
+  "username": "Gene",
+  "name": "Eugene",
+  "email": "E2@gmail.com",
+  "password": "$5$rounds=535000$MTq7Za0s1X09ApUe$ofMLRTsHkc2BaXIbo1ZmpojbV4N5qfqAHccbxhJ4oE5",
+  "access": 0,
+  "salt": "@Up+r"
+ },
+ {
+  "username": "L3V1",
+  "name": "Levi",
+  "email": "uriah@gmail.com",
+  "password": "$5$rounds=535000$JuivDlYLa.b5MsPa$EqRkcqKdgv3jTvrmhnoMYlzjA0OWxWgULwTRcaXkV10",
+  "access": 0,
+  "salt": "%<q~="
+ }
 ]

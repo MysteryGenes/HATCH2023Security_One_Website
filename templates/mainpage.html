@@ -2,7 +2,8 @@
 <html>
   <head>
     <title>My Website</title>
-     <link rel="stylesheet" href="main_page.css">
+     <link rel="stylesheet" href="static/global.css">
+     <link rel="stylesheet" href="static/top_bar.css">
      <style>
       /* style the navigation bar */
       nav {
@@ -68,30 +69,54 @@
   </head>
   <body>
     <nav>
+      <img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081946920534167612/Screen_Shot_2023-03-04_at_7.32.56_PM.png" alt="Logo"style="width:45px;"style="height:45px"> 
       <a class="active" href="mainpage">Home</a>
       <a href="about">About</a>
       <a href="contact">Contact</a>
+      <a href="help">Help</a>
       <a href="adminmainpage">Admin</a>
       <div class="dropdown">
         <button class="dropbtn"><img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081792647091466290/Screen_Shot_2023-03-04_at_10.17.05_PM.png" width=50></button>
         <div class="dropdown-content">
           <a href="settings">Settings</a>
           <a href="profile">Profile</a>
-          <a href="#">Logout</a>
+          <a href="logsomething">Logout</a>
         </div>
       </div>
     </nav>
-    <h1>File Uploader</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="Upload">
-    </form>
-    <hr>
+    <h1>Welcome to Safegene!</h1>
     <h2>Download a File</h2>
     <form action="/download">
-        <label for="filename">Enter filename:</label>
-        <input type="text" id="filename" name="filename">
-        <input type="submit" value="Download">
+      <label for="filename">Enter filename:</label>
+      <input type=
+      "text" id="filename" name="filename">
+      <input type="submit" value="Download">
+      <?php
+      if(isset($_GET['filename'])) {
+        $filename = $_GET['filename'];
+        $filepath = 'uploads/' . $filename;
+        if (file_exists($filepath)) {
+          header('Content-Type: application/octet-stream');
+          header('Content-Disposition: attachment; filename="' . $filename . '"');
+          readfile($filepath);
+        } else {
+          // file not found, return an error message
+          echo 'File not found';
+        }
+      }
+      ?>
+      <script>
+        const input = document.querySelector('#filename')
+        input.addEventListener('keyup', event => {
+          const value = event.target.value;
+          if (!/^[a-zA-Z0-9-.]+$/.test(value) && value !== '') { // it will allow only alphabetic
+            event.target.value =  event.target.getAttribute('data-value');
+          } else {
+            event.target.setAttribute('data-value', value);
+          }
+        });
+      </script>
     </form>
+    
   </body>
 </html>
