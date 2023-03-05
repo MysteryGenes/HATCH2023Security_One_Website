@@ -1,0 +1,26 @@
+
+        
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+        <link href="#index.css" rel="stylesheet" type="text/css">
+    
+        <title>HATCH Website</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <body bgcolor="#000000">
+        <title>NZ Quakes - Main Web Site Log</title>
+        <link href="log-ip.html" rel="stylesheet" type="html">
+    </head> 
+
+    <body>
+        {% include 'includes/_navbar.html' %}
+        <div>
+            {% include 'includes/_messages.html' %}
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

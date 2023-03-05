@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Website</title>
+     <link rel="stylesheet" href="main_page.css">
+     <style>
+      /* style the navigation bar */
+      nav {
+        background-color: #a4d7da;
+        overflow: hidden;
+        font-size: 20px;
+      }
+      /* style the links inside the navigation bar */
+      nav a {
+        float: left;
+        color: #333;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      /* change the color of the active/current link */
+      nav a.active {
+        background-color: #67a9ad;
+      }
+      /* add a dropdown menu */
+      .dropdown {
+        float: left;
+        overflow: hidden; 
+      }
+      .dropdown .dropbtn {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        margin: 0;
+      }
+      .dropdown:hover .dropbtn {
+        background-color: #67a9ad;
+      }
+      /* dropdown content (hidden by default) */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        z-index: 1;
+      }
+      /* links inside the dropdown */
+      .dropdown-content a {
+        float: none;
+        color: #333;
+        padding: 6px 8px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+      /* add a hover effect to dropdown links */
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+      /* show the dropdown menu on hover */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      </style>
+  </head>
+  <body>
+    <nav>
+      <a class="active" href="mainpage">Home</a>
+      <a href="about">About</a>
+      <a href="contact">Contact</a>
+      <a href="adminmainpage">Admin</a>
+      <div class="dropdown">
+        <button class="dropbtn"><img src="https://cdn.discordapp.com/attachments/1080310430561472633/1081792647091466290/Screen_Shot_2023-03-04_at_10.17.05_PM.png" width=50></button>
+        <div class="dropdown-content">
+          <a href="settings">Settings</a>
+          <a href="profile">Profile</a>
+          <a href="#">Logout</a>
+        </div>
+      </div>
+    </nav>
+    <h1>File Uploader</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    <hr>
+    <h2>Download a File</h2>
+    <form action="/download">
+        <label for="filename">Enter filename:</label>
+        <input type="text" id="filename" name="filename">
+        <input type="submit" value="Download">
+    </form>
+  </body>
+</html>

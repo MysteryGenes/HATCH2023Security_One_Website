@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<link rel="stylesheet" href="login.css">
+<style>
+  body {
+    background-color: #333;
+    font-family: Arial, sans-serif;
+  }
+
+  #signup-container {
+    margin: auto;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  input[type="text"],
+  input[type="username"],
+  input[type="email"],
+  input[type="password"] {
+    display: block;
+    margin: 5px auto;
+    padding: 5px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    font-size: 16px;
+    color: #333;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  button[type="submit"] {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #0069d9;
+  }
+
+  p {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  a:hover {
+    color: #0069d9;
+  }
+</style>
+</head>
+
+<body>
+  <div id="signup-container">
+    <h1>Sign Up</h1>
+    {% from "includes/_formhelpers.html" import render_field %}
+    <form method="POST" action="">
+      <div class="form-group">
+        {{ render_field(form.username, class_="form_control") }}
+      </div>
+
+      <div class="form-group">
+        {{ render_field(form.password, class_="form_control") }}
+      </div>
+
+      <p><input class="btn btn-primary" type="submit" value="Submit"></p>
+    </form>
+    <p>Already have an account? <a href="create">Log in</a></p>
+  </div>
+</body>
+</style>
+{% endblock %}
