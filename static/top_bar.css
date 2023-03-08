@@ -1,0 +1,114 @@
+/* set the body to have no margin and padding */
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+}
+
+/* add some basic styling to the navigation bar */
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 50px;
+  transition: font-size 0.3s ease-in-out;
+  transition-delay: .5s; /* delay the transition back to the original font size by 0.5 seconds */
+}
+
+nav a.active {
+  color: #f0f0f0;
+  background-color: #333;
+}
+
+nav a:hover {
+  color: #000000;
+  background-color: #f0f0f0;
+  font-size: 30px;
+  transition-delay: 0s; /* reset the transition delay when hovering over the link again */
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+}
+
+input[type=text] {
+  flex: 1;
+  border: none;
+  font-size: 16px;
+  padding: 10px;
+  background-color: #f2f2f2;
+}
+
+button[type=submit] {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+button[type=submit]:hover {
+  background-color: #3e8e41;
+}
+
+/* add a dropdown menu */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 0x 16px;
+  background-color: inherit;
+  margin: 0;
+}
+.dropdown:hover .dropbtn {
+  background-color: white;
+}
+/* dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  z-index: 1;
+}
+/* links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: #333;
+  padding: 0px 8px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+/* add a hover effect to dropdown links */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+/* show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+button {
+  padding: 0px, 6px;
+}
